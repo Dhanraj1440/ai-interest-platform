@@ -18,6 +18,8 @@ export default function ProfilePage() {
     technology: 0,
   });
 
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+
   useEffect(() => {
 
     loadProfile();
@@ -130,6 +132,54 @@ export default function ProfilePage() {
     });
 
     setInterestScores(scores);
+
+    generateRecommendations(scores);
+  }
+
+  function generateRecommendations(scores: any) {
+
+    let items: string[] = [];
+
+    // FITNESS
+    if (scores.fitness >= 10) {
+      items.push("🏋️ Gym Gloves");
+      items.push("🥤 Protein Shaker");
+      items.push("⌚ Fitness Watch");
+    }
+
+    // GAMING
+    if (scores.gaming >= 10) {
+      items.push("🎮 Gaming Mouse");
+      items.push("⌨️ Mechanical Keyboard");
+      items.push("🎧 Gaming Headphones");
+    }
+
+    // MUSIC
+    if (scores.music >= 10) {
+      items.push("🎵 Bluetooth Speaker");
+      items.push("🎧 Studio Headphones");
+    }
+
+    // FASHION
+    if (scores.fashion >= 10) {
+      items.push("👟 Sneakers");
+      items.push("🧥 Streetwear Hoodie");
+    }
+
+    // TRAVEL
+    if (scores.travel >= 10) {
+      items.push("🧳 Travel Backpack");
+      items.push("📸 Action Camera");
+    }
+
+    // TECHNOLOGY
+    if (scores.technology >= 10) {
+      items.push("💻 Laptop Accessories");
+      items.push("🖱️ Wireless Mouse");
+      items.push("📱 Smart Gadgets");
+    }
+
+    setRecommendations(items);
   }
 
   return (
@@ -241,6 +291,35 @@ export default function ProfilePage() {
 
         </div>
 
+        {/* AI RECOMMENDATIONS */}
+
+        <div className="mt-12">
+
+          <h2 className="text-4xl font-bold mb-6">
+            Recommended For You
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {recommendations.map((item, index) => (
+
+              <div
+                key={index}
+                className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800"
+              >
+
+                <p className="text-2xl font-semibold">
+                  {item}
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
         {/* POSTS */}
 
         <div className="mt-12">
@@ -262,9 +341,15 @@ export default function ProfilePage() {
                   {post.content}
                 </p>
 
-                <div className="mt-4 text-zinc-400 text-sm">
+                <div className="mt-4 flex gap-6 text-sm text-zinc-400">
 
-                  ❤️ {post.likes}
+                  <span>
+                    ❤️ {post.likes}
+                  </span>
+
+                  <span>
+                    💬 {post.comments?.length || 0}
+                  </span>
 
                 </div>
 
